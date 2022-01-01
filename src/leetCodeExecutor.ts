@@ -20,7 +20,7 @@ class LeetCodeExecutor implements Disposable {
     private configurationChangeListener: Disposable;
 
     constructor() {
-        this.leetCodeRootPath = path.join(__dirname, "..", "..", "node_modules", "vsc-leetcode-cli");
+        this.leetCodeRootPath = path.join(__dirname, "..", "..", "node_modules", "@haozibi", "vsc-leetcode-cli");
         this.nodeExecutable = this.getNodePath();
         this.configurationChangeListener = workspace.onDidChangeConfiguration((event: ConfigurationChangeEvent) => {
             if (event.affectsConfiguration("leetcode.nodePath")) {
@@ -102,7 +102,7 @@ class LeetCodeExecutor implements Disposable {
 
     public async showProblem(problemNode: IProblem, language: string, filePath: string, showDescriptionInComment: boolean = false, needTranslation: boolean): Promise<void> {
         const templateType: string = showDescriptionInComment ? "-cx" : "-c";
-        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", problemNode.id, templateType, "-l", language];
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", "'" + problemNode.id + "'", templateType, "-l", language];
 
         if (!needTranslation) {
             cmd.push("-T"); // use -T to force English version
@@ -139,7 +139,7 @@ class LeetCodeExecutor implements Disposable {
     }
 
     public async getDescription(problemNodeId: string, needTranslation: boolean): Promise<string> {
-        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", problemNodeId, "-x"];
+        const cmd: string[] = [await this.getLeetCodeBinaryPath(), "show", "'" + problemNodeId + "'", "-x"];
         if (!needTranslation) {
             cmd.push("-T");
         }
